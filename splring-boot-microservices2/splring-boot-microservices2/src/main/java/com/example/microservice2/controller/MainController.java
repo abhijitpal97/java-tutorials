@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -16,13 +17,14 @@ import com.example.microservice2.bean.EmployeeBean;
 import com.example.microservice2.service.DataService;
 
 @RestController
+@RequestMapping("/serviceemployees")
 public class MainController {
 
 	@Autowired
 	DataService service;
 
 
-	@GetMapping("/employees/{id}/serviceemployee")
+	@GetMapping("/{id}/serviceemployee")
 	public EmployeeBean getEmployee(@PathVariable int id)
 	{
 		return service.getEmployee(id);
@@ -30,7 +32,7 @@ public class MainController {
 
 
 
-	@PostMapping("/employees/update") 
+	@PostMapping("/update") 
 	public ResponseEntity < Object > persistEmployee(@RequestBody EmployeeBean employee) 
 	{ 
 		EmployeeBean bean = service.updateDetails(employee); 
@@ -41,5 +43,13 @@ public class MainController {
 		return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
 
 	}
+	
+	@GetMapping("/message")
+	public String validatecall()
+	{
+		return "Inside Second Service call";
+	}
+	
+	
 
 }
