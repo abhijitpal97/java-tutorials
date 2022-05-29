@@ -8,19 +8,23 @@
 		<version>2.7.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.example.spring.cloudgateway</groupId>
-	<artifactId>spring-cloud-gateway</artifactId>
+	<groupId>com.example.namingservice</groupId>
+	<artifactId>naming-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>spring-cloud-gateway</name>
-	<description>Demo project for Spring Boot Gateway</description>
+	<name>naming-service</name>
+	<description>Demo project for Spring Boot Naming Service</description>
 	<properties>
 		<java.version>17</java.version>
-		<spring-cloud.version>2021.0.3-SNAPSHOT</spring-cloud.version>
+		<spring-cloud.version>2021.0.3</spring-cloud.version>
 	</properties>
 	<dependencies>
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-gateway</artifactId>
+			<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
 		</dependency>
 
 		<dependency>
@@ -34,14 +38,6 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-   			<groupId>org.springframework.boot</groupId>
-   			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
-		<dependency>
-   			<groupId>org.springframework.cloud</groupId>
-    		<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-		</dependency>		
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -63,23 +59,5 @@
 			</plugin>
 		</plugins>
 	</build>
-	<repositories>
-		<repository>
-			<id>spring-snapshots</id>
-			<name>Spring Snapshots</name>
-			<url>https://repo.spring.io/snapshot</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-		</repository>
-		<repository>
-			<id>spring-milestones</id>
-			<name>Spring Milestones</name>
-			<url>https://repo.spring.io/milestone</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
 
 </project>
