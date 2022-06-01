@@ -1,5 +1,7 @@
 package com.example.microservice1.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,5 +29,12 @@ public class MainController {
 	public String validatecall()
 	{
 		return "Inside First Service call";
+	}
+	
+	@GetMapping("/employees")
+	public List<EmployeeBean> getEmployees()
+	{
+		System.out.println("Inside Main Controller 1");
+		return service.getEmployees();
 	}
 }

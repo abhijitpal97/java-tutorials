@@ -35,4 +35,9 @@ public class DataService {
 		return null;
 	}
 
+	public List<EmployeeBean> getEmployees() {
+		System.out.println(beanList);
+		return beanList;
+	}
+
 }

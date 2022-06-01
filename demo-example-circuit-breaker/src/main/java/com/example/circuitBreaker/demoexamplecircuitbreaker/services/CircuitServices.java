@@ -1,5 +1,9 @@
 package com.example.circuitBreaker.demoexamplecircuitbreaker.services;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -35,6 +39,32 @@ public class CircuitServices {
     	System.out.println("123");
     	return null;
     }
+    
+    public EmployeeBean defaultBean()
+    {
+    	System.out.println("1234");
+    	return null;
+    }
+    
+    public List<EmployeeBean> defaultListBean()
+    {
+    	List<EmployeeBean> list = new ArrayList<EmployeeBean>();
+    	EmployeeBean bean = new EmployeeBean(999, "Test");
+    	list.add(bean);
+    	return list;
+    }
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	@HystrixCommand(fallbackMethod = "defaultListBean")
+	public List<EmployeeBean> getEmployees() {
+    	System.out.println("Inside This - ");
+    	ResponseEntity<List> response =  new RestTemplate()
+    			.getForEntity("http://localhost:8081/employees/employees",  List.class);
+    	List<EmployeeBean> beans = response.getBody(); 
+    	System.out.println(beans);
+    	 return beans;
+    
+	}
 	
 
 }

@@ -1,5 +1,7 @@
 package com.example.circuitBreaker.demoexamplecircuitbreaker.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,10 +24,10 @@ public class MainController {
 		return services.getMessage();
 	}
 	
-	@GetMapping("/{id}/employee")
-	public EmployeeBean getId(@PathVariable int id)
+	@GetMapping("/employees")
+	public List<EmployeeBean> getEmployees()
 	{
-		return services.getEmployee(id);
+		return services.getEmployees();
 	}
 	
 }
