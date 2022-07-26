@@ -1,11 +1,12 @@
 package com.example.microservice1.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,8 +27,9 @@ public class MainController {
 	}
 	
 	@GetMapping("/message")
-	public String validatecall()
+	public String validatecall(@RequestHeader Map<String , String> map)
 	{
+		map.entrySet().stream().forEach((t) -> System.out.println(t.getKey() + " - - " + t.getValue()));
 		return "Inside First Service call";
 	}
 	
