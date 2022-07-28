@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -50,6 +52,43 @@ public class ClientController {
 		
 		return Stream.concat(c1.get().stream(), c2.get().stream())
                 .collect(Collectors.toList());
+	}
+	
+	@GetMapping(value = "/findCompareCallAsyn")
+	public Void runLambaComperatableFuture() throws InterruptedException, ExecutionException
+	{
+		CompletableFuture<Void> l1 = CompletableFuture.runAsync(
+				() ->
+				{
+					CompletableFuture<List<Client>> c1 = services.getAllClient();
+					CompletableFuture<List<Client>> c2 = services.getAllClient();
+					try {
+						c1.get().stream().forEach((t) ->
+						System.out.println(t.getClientId())
+						);
+						
+						c2.get().stream().forEach((t) ->
+						System.out.println(t.getClientId())
+						);
+					} catch (InterruptedException e) {
+						
+					} catch (ExecutionException e) {
+						
+					}
+				}
+				);
+		
+		return l1.get();
+	}
+	
+	@GetMapping(value = "/findCompareCallSupAsyn")
+	public List<Client> runLambdaSupplierDemo() throws InterruptedException, ExecutionException
+	{
+	 Executor exec = Executors.newCachedThreadPool();
+		return CompletableFuture.supplyAsync(
+				() ->
+				{return services.getAllClientData();},exec
+				).get();
 	}
 
 }

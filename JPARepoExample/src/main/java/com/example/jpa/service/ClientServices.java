@@ -50,5 +50,13 @@ public class ClientServices {
 		List<Client> clients = repo.findAll();
 		return CompletableFuture.completedFuture(clients);
 	}
+	
+	public List<Client> getAllClientData()
+	{
+		log.info("Current Log - " + Thread.currentThread().getName());
+		List<Client> clients = repo.findAll();
+		System.out.println(clients);
+		return clients;
+	}
 
 }
