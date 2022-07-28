@@ -3,6 +3,10 @@ package com.example.jpa.controller;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,21 +22,34 @@ import com.example.jpa.service.ClientServices;
 @RestController
 @RequestMapping("/clientservice")
 public class ClientController {
-	
+
 	@Autowired
 	ClientServices services;
-	
+
 	@PostMapping(value = "/add")
 	public void addClient(@RequestBody Client client)
 	{
 		services.addClient(client);					
 	}
-	
-	
+
+
 	@GetMapping(value = "/findbyclientId/{Id}")
 	public Optional<Client> getClients(@PathVariable int Id)
 	{
 		return services.getAllClientById(Id);
+	}
+
+
+	@GetMapping(value = "/findAllClients")
+	public List<Client> getAllClients() throws InterruptedException, ExecutionException
+	{
+		CompletableFuture<List<Client>> c1 = services.getAllClient();
+		CompletableFuture<List<Client>> c2 = services.getAllClient();
+		
+		CompletableFuture.allOf(c1,c2).join();
+		
+		return Stream.concat(c1.get().stream(), c2.get().stream())
+                .collect(Collectors.toList());
 	}
 
 }
