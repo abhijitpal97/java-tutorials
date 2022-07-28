@@ -42,6 +42,7 @@ public class ClientController {
 	}
 
 
+	//Calling same Method in Two Threads parallel results
 	@GetMapping(value = "/findAllClients")
 	public List<Client> getAllClients() throws InterruptedException, ExecutionException
 	{
@@ -54,6 +55,8 @@ public class ClientController {
                 .collect(Collectors.toList());
 	}
 	
+	
+	//Calling same Method in Two Threads parallel results
 	@GetMapping(value = "/findCompareCallAsyn")
 	public Void runLambaComperatableFuture() throws InterruptedException, ExecutionException
 	{
