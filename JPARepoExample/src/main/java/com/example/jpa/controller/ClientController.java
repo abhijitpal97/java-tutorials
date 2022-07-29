@@ -97,7 +97,7 @@ public class ClientController {
 	}
 
 	
-	@GetMapping(value = "/deleteBuId/{Id}")
+	@PostMapping(value = "/deleteBuId/{Id}")
 	public ResponseEntity<String> deleteById(@PathVariable int Id)
 	{
 		services.deleteById(Id);
