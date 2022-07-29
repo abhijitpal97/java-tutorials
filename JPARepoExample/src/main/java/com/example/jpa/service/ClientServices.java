@@ -9,6 +9,9 @@ import org.slf4j.LoggerFactory;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +28,7 @@ public class ClientServices {
 	ClientRepo repo;
 
 	@Transactional
+	@CachePut(value = "client")
 	public void addClient(Client client)
 	{
 		if(client.getName().isEmpty() || client.getLocation().isEmpty())
@@ -35,6 +39,7 @@ public class ClientServices {
 	}
 
 
+	@Cacheable("client")
 	public Optional<Client> getAllClientById(int Id)
 	{
 		Optional<Client> clients = repo.findById(Id);
@@ -51,12 +56,21 @@ public class ClientServices {
 		return CompletableFuture.completedFuture(clients);
 	}
 	
+	
 	public List<Client> getAllClientData()
 	{
 		log.info("Current Log - " + Thread.currentThread().getName());
 		List<Client> clients = repo.findAll();
 		System.out.println(clients);
 		return clients;
+	}
+
+
+	@CacheEvict(cacheNames = "client" , allEntries = true)
+	public void deleteById(int id) {
+		
+		repo.deleteById(id);
+		
 	}
 
 }
