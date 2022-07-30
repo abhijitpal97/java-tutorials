@@ -28,6 +28,7 @@ public class ClientServices {
 	ClientRepo repo;
 
 	@Transactional
+	@CacheEvict(value="client",  allEntries = true) 
 	@CachePut(value = "client")
 	public void addClient(Client client)
 	{
