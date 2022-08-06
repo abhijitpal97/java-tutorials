@@ -2,6 +2,7 @@ package com.example.addCase.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,19 +10,24 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
+import com.example.addCase.bean.BUConfigurationBean;
 import com.example.addCase.bean.CaseItemBean;
 import com.example.addCase.bean.ConfigurationBean;
 import com.example.addCase.repository.ValidationInterface;
+
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 
 @Component
 public class ValidatorClass implements ValidationInterface{
 
 	Logger logger = LoggerFactory.getLogger(ValidatorClass.class);
 
+	@CircuitBreaker(name = "validateService" , fallbackMethod = "genericFallbackMethod")
 	@Override
-	public boolean isValidated(CaseItemBean items) {
+	public boolean isValidated(CaseItemBean items) throws ResourceAccessException{
 
 		ResponseEntity<List<ConfigurationBean>> result =
 				new RestTemplate().exchange("http://localhost:9091/caseAnalysisService/getConfigurationByRegion/NAM",
@@ -42,13 +48,22 @@ public class ValidatorClass implements ValidationInterface{
 				logger.info("No such validation required for the key -  "+bean.getConfigkey());			
 		}
 
-		if(focusType.contains(items.getFocustype()) && escMarker.contains(items.getEscalationmarker()))
+		ResponseEntity<List<BUConfigurationBean>> buResult =
+				new RestTemplate().exchange("http://localhost:9091/caseAnalysisService/getBuConfigurationByRegion/NAM",
+						HttpMethod.GET, null, new ParameterizedTypeReference<List<BUConfigurationBean>>() {
+				});
+
+		List<BUConfigurationBean> buConfiguration = buResult.getBody();
+		List<String> buIds = buConfiguration.stream().map((t) -> t.getBuName()).collect(Collectors.toList());
+		System.out.println(buIds);
+		if(focusType.contains(items.getFocustype()) && escMarker.contains(items.getEscalationmarker()) 
+				&& buIds.contains(items.getBusinessunit()))
 			return true;
 		else
-			return false;
-
+			return false;		
 	}
-
-
-
+	
+	public boolean genericFallbackMethod(Exception e) throws ResourceAccessException{
+		return false;
+	}
 }

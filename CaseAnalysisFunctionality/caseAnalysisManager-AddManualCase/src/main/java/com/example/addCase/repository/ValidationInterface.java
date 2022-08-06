@@ -5,5 +5,5 @@ import com.example.addCase.bean.CaseItemBean;
 public interface ValidationInterface {
 
 	boolean isValidated(CaseItemBean items);
-
+	
 }
