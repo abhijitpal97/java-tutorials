@@ -30,7 +30,7 @@ public class ValidatorClass implements ValidationInterface{
 	public boolean isValidated(CaseItemBean items) throws ResourceAccessException{
 
 		ResponseEntity<List<ConfigurationBean>> result =
-				new RestTemplate().exchange("http://localhost:9091/caseAnalysisService/getConfigurationByRegion/NAM",
+				new RestTemplate().exchange("http://ADD-CONFIG-SERVICE/caseAnalysisService/getConfigurationByRegion/NAM",
 						HttpMethod.GET, null, new ParameterizedTypeReference<List<ConfigurationBean>>() {
 				});
 		List<ConfigurationBean> configuration = result.getBody();
@@ -49,7 +49,7 @@ public class ValidatorClass implements ValidationInterface{
 		}
 
 		ResponseEntity<List<BUConfigurationBean>> buResult =
-				new RestTemplate().exchange("http://localhost:9091/caseAnalysisService/getBuConfigurationByRegion/NAM",
+				new RestTemplate().exchange("http://ADD-CONFIG-SERVICE/caseAnalysisService/getBuConfigurationByRegion/NAM",
 						HttpMethod.GET, null, new ParameterizedTypeReference<List<BUConfigurationBean>>() {
 				});
 
