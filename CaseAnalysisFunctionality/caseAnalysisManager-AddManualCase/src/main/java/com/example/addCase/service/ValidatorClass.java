@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -25,12 +27,20 @@ public class ValidatorClass implements ValidationInterface{
 
 	Logger logger = LoggerFactory.getLogger(ValidatorClass.class);
 
+	@Bean
+	@LoadBalanced
+	public RestTemplate getTemplate()
+	{
+		return new RestTemplate();
+	}
+	
+	
 	@CircuitBreaker(name = "validateService" , fallbackMethod = "genericFallbackMethod")
 	@Override
 	public boolean isValidated(CaseItemBean items) throws ResourceAccessException{
 
 		ResponseEntity<List<ConfigurationBean>> result =
-				new RestTemplate().exchange("http://ADD-CONFIG-SERVICE/caseAnalysisService/getConfigurationByRegion/NAM",
+				getTemplate().exchange("http://ADD-CONFIG-SERVICE/caseAnalysisService/getConfigurationByRegion/NAM",
 						HttpMethod.GET, null, new ParameterizedTypeReference<List<ConfigurationBean>>() {
 				});
 		List<ConfigurationBean> configuration = result.getBody();
@@ -49,7 +59,7 @@ public class ValidatorClass implements ValidationInterface{
 		}
 
 		ResponseEntity<List<BUConfigurationBean>> buResult =
-				new RestTemplate().exchange("http://ADD-CONFIG-SERVICE/caseAnalysisService/getBuConfigurationByRegion/NAM",
+				getTemplate().exchange("http://ADD-CONFIG-SERVICE/caseAnalysisService/getBuConfigurationByRegion/NAM",
 						HttpMethod.GET, null, new ParameterizedTypeReference<List<BUConfigurationBean>>() {
 				});
 
