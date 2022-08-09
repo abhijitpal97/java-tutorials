@@ -5,6 +5,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +20,7 @@ import com.example.addkyc.service.AddService;
 import com.example.addkyc.service.FindService;
 
 @RestController
-@RequestMapping(value = "/caseAnalysisService")
+@RequestMapping("/caseAnalysisService")
 public class AddCustomerController {
 	
 	@Autowired

@@ -11,21 +11,26 @@ import org.springframework.stereotype.Service;
 
 import com.example.addConfig.bean.BUConfigurationBean;
 import com.example.addConfig.bean.ConfigurationBean;
+import com.example.addConfig.bean.UserBean;
 import com.example.addConfig.repo.BUFindRepository;
 import com.example.addConfig.repo.BURepository;
 import com.example.addConfig.repo.ConfigurationFindRepository;
 import com.example.addConfig.repo.ConfigurationRepository;
+import com.example.addConfig.repo.FindUserRepository;
 import com.example.addConfig.repo.Repository;
+import com.example.addConfig.repo.UserRepo;
 
 
 @Service
-public class ConfigFindService implements ConfigurationFindRepository,BUFindRepository{
+public class ConfigFindService implements ConfigurationFindRepository,BUFindRepository,FindUserRepository{
 
 	@Autowired
 	Repository repo;
 	@Autowired
 	BURepository buRepo;
-
+	@Autowired
+	UserRepo userRepo;
+	
 	@Cacheable(value = "configurations")
 	@Override
 	public List<ConfigurationBean> findConfigurationByConfigKey(String configkey) {
@@ -57,6 +62,11 @@ public class ConfigFindService implements ConfigurationFindRepository,BUFindRepo
 		return buRepo.findAllByregion(region);
 
 
+	}
+
+	@Override
+	public List<UserBean> findUserByname(String name) {
+		return userRepo.findAllByname(name);
 	}
 
 	

@@ -1,6 +1,7 @@
 package com.example.addkyc.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.example.addkyc.bean.CustomerBean;
@@ -15,8 +16,9 @@ public class FindService implements FindServiceRepository{
 	BeanRepository repo;
 	
 	@Override
+	@Cacheable("kycServices")
 	public CustomerBean getCustomerBean(int id) {
-		
+		System.out.println("Inside DB Hit Method");
 		return repo.findAllBycustId(id);
 		
 	}

@@ -11,19 +11,24 @@ import org.springframework.stereotype.Service;
 
 import com.example.addConfig.bean.BUConfigurationBean;
 import com.example.addConfig.bean.ConfigurationBean;
+import com.example.addConfig.bean.UserBean;
+import com.example.addConfig.repo.AddUserRepository;
 import com.example.addConfig.repo.BUAddRepository;
 import com.example.addConfig.repo.BURepository;
 import com.example.addConfig.repo.ConfigurationRepository;
 import com.example.addConfig.repo.Repository;
+import com.example.addConfig.repo.UserRepo;
 
 
 @Service
-public class ConfigAddService implements ConfigurationRepository , BUAddRepository{
+public class ConfigAddService implements ConfigurationRepository , BUAddRepository , AddUserRepository{
 
 	@Autowired
 	Repository repo;
 	@Autowired
 	BURepository buRepo;
+	@Autowired
+	UserRepo userRepo;
 
 
 
@@ -48,6 +53,13 @@ public class ConfigAddService implements ConfigurationRepository , BUAddReposito
 		return CompletableFuture.completedFuture(buconfigresult);
 
 
+	}
+	
+	
+	@Override
+	public CompletableFuture<List<UserBean>> addUsers(List<UserBean> users) {
+		List<UserBean> usersResult = userRepo.saveAll(users);
+		return CompletableFuture.completedFuture(usersResult);
 	}
 
 
