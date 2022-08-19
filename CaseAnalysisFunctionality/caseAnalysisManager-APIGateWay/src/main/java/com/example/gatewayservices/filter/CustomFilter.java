@@ -6,7 +6,11 @@ import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.Ordered;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
@@ -21,9 +25,22 @@ public class CustomFilter implements GlobalFilter,Ordered {
 
 	@Override
 	public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-
+		boolean isAuthorized=false;
+		if(! exchange.getRequest().getHeaders().containsKey("Authorization"))
+		{
+			throw new RuntimeException("No Authorization Key Present !");
+		}
+		else
+		{
+			try {
+				isAuthorized = isAuthorize(exchange.getRequest().getHeaders().get("Authorization").get(0));
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		try {
-			if(!isAuthorize("Abhijit", "password1")){
+			if(!isAuthorized){
 				throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"you can't consume this service , Please validate your User Details!!");
 			}
 		} catch (Exception e) {
@@ -34,15 +51,18 @@ public class CustomFilter implements GlobalFilter,Ordered {
 		return chain.filter(exchange);
 	}
 
-	private boolean isAuthorize(String username , String password) throws Exception{
-		AuthRequest authRequest = new AuthRequest(username, password);
-		String response = Optional.ofNullable(
-				getTemplate().postForObject("http://localhost:9095/authenticate", authRequest, String.class)).orElse("");
+	private boolean isAuthorize(String token) throws Exception{
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Authorization", token);
+
+		HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
 
-		System.out.println(response);
-		boolean flag = response.equalsIgnoreCase("") || response.equalsIgnoreCase("Invalid Credentials");
-		return flag==false?true:false;
+		ResponseEntity<Boolean> response =  getTemplate().exchange("http://localhost:9095/validateToken", HttpMethod.GET, requestEntity, Boolean.class);
+		boolean result = Optional.ofNullable(response.getBody()).orElse(false);
+		System.out.println(result);
+		return result;
 	}
 
 	@Bean

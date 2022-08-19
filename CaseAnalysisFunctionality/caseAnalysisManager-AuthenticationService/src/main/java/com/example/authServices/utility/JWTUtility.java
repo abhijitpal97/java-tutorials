@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,8 @@ import javax.crypto.SecretKey;
 
 @Service
 public class JWTUtility {
-
+	
+	
 	private SecretKey secret = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 	public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();
@@ -32,9 +34,9 @@ public class JWTUtility {
                 .signWith(SignatureAlgorithm.HS256, secret).compact();
     }
 
-    public Boolean validateToken(String token, UserDetails userDetails) {
+    public Boolean validateToken(String token) {
         final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        return (username.equals(extractUsername(token)) && !isTokenExpired(token));
     }
     private Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
