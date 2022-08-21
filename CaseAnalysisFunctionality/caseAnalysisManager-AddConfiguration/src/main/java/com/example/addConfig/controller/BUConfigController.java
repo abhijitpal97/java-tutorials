@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.addConfig.bean.BUConfigurationBean;
-import com.example.addConfig.bean.ConfigurationBean;
+import com.example.addConfig.kafkaService.Producer;
 import com.example.addConfig.service.ConfigAddService;
 import com.example.addConfig.service.ConfigFindService;
 
@@ -33,13 +33,20 @@ public class BUConfigController {
 	@Autowired
 	ConfigFindService findService;
 
+	@Autowired
+	Producer producer;
 	
 	@PostMapping("/saveBuConfigurations")
 	public ResponseEntity<String> saveBuConfig(@RequestBody List<BUConfigurationBean> buNames) throws InterruptedException, ExecutionException
 	{
 		CompletableFuture<List<BUConfigurationBean>> future =services.addBuConfiguration(buNames);
-		if(future.get().size() == buNames.size())
+		int count = future.get().size();
+		if(count == buNames.size())
+			{
+			producer.ProducerData("Config", "Total Number of Bu aaddition Happen successfully - "+count, "saveBukey");
 			return ResponseEntity.status(HttpStatus.CREATED).build();
+			}
+		
 		else
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 	}
@@ -47,6 +54,7 @@ public class BUConfigController {
 	@GetMapping("/getBuConfigurations/{buName}")
 	public List<BUConfigurationBean> getBuNames(@PathVariable String buName) throws InterruptedException, ExecutionException
 	{
+		producer.ProducerData("Config", "Bu Search for Name "+buName+" done.", "auditkey");
 		return CompletableFuture.supplyAsync(
 				() -> {
 				return findService.findConfigurationBybuName(buName);	
@@ -58,6 +66,7 @@ public class BUConfigController {
 	@GetMapping("/getBuConfigurationByRegion/{region}")
 	public List<BUConfigurationBean> getBuNamesByRegion(@PathVariable String region) throws InterruptedException, ExecutionException
 	{
+		producer.ProducerData("Config", "Bu Search based on Region "+region+" done.", "auditkey");
 		return CompletableFuture.supplyAsync(
 				() -> {
 				return findService.findConfigurationByburegion(region);	
