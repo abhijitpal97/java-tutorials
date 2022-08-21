@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.addConfig.bean.BUConfigurationBean;
 import com.example.addConfig.bean.ConfigurationBean;
+import com.example.addConfig.kafkaService.Producer;
 import com.example.addConfig.service.ConfigAddService;
 import com.example.addConfig.service.ConfigFindService;
 
@@ -33,13 +34,20 @@ public class ConfigController {
 	@Autowired
 	ConfigFindService findService;
 
+	@Autowired
+	Producer producer;
+	
 	@PostMapping("/saveConfigurations")
 	public ResponseEntity<Object> saveConfig(@RequestBody List<ConfigurationBean> config) throws InterruptedException, ExecutionException
 	{
 		CompletableFuture<List<ConfigurationBean>> result = services.addConfiguration(config);
 
 		if(result.get().size() == config.size())
+		{
+			producer.ProducerData("Config", "Added Configurations - "+config, "saveconfigkey");
 			return ResponseEntity.status(HttpStatus.CREATED).build();
+		}
+			
 		else
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 	}
@@ -48,20 +56,28 @@ public class ConfigController {
 	@GetMapping("/getConfiguration/{key}")
 	public List<ConfigurationBean> getConfigurationByKey(@PathVariable String key) throws InterruptedException, ExecutionException
 	{
-		return CompletableFuture.supplyAsync(
+		List<ConfigurationBean> future =  CompletableFuture.supplyAsync(
 				() -> {return findService.findConfigurationByConfigKey(key);}
 				).get();
+		
+		if(! future.isEmpty())
+			producer.ProducerData("Config", "Configuration Search based on Key "+key+" done.", "auditkey");
+		return future;
 
 	}
 
 	@GetMapping("/getConfigurationByRegion/{region}")
 	public List<ConfigurationBean> getConfigurationByRegion(@PathVariable String region) throws InterruptedException, ExecutionException
 	{
-		return CompletableFuture.supplyAsync(
+		List<ConfigurationBean> future =  CompletableFuture.supplyAsync(
 				() -> {
 					return findService.findConfigurationByregion(region);	
 				}
 				).get();
+		
+		if(! future.isEmpty())
+			producer.ProducerData("Config", "Configuration Search based on Region "+region+" done.", "auditkey");
+		return future;
 
 	}
 

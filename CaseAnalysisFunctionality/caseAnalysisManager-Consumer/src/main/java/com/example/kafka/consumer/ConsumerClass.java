@@ -13,6 +13,8 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.example.kafka.servcie.JDBCService;
+
 public class ConsumerClass {
 
 	private static Logger log= LoggerFactory.getLogger(ConsumerClass.class.getSimpleName());
@@ -48,8 +50,7 @@ public class ConsumerClass {
 						try {
 							mainThread.join();
 						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+							log.info("Error in Shutting Down Thread - "+e.getMessage());
 						}
 					}
 
@@ -67,8 +68,7 @@ public class ConsumerClass {
 
 					for(ConsumerRecord<String, String> record : records)
 					{
-						log.info("Key - "+record.key() + " with value - "+record.value());
-						log.info("Partion - "+record.partition() + " from offset - "+record.offset());
+						JDBCService.saveRecord(record.value());
 					}
 
 				}
@@ -78,9 +78,6 @@ public class ConsumerClass {
 			}
 			catch (Exception e) {
 				log.error("UnExpected Exception - "+e.getMessage() , e);
-			}
-			finally {
-				consumer.close(); //Will commit offset
 			}
 		}
 
