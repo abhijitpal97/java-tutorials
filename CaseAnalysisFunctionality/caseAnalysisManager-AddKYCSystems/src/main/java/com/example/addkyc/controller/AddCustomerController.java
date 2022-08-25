@@ -20,7 +20,7 @@ import com.example.addkyc.service.AddService;
 import com.example.addkyc.service.FindService;
 
 @RestController
-@RequestMapping("/caseAnalysisService")
+@RequestMapping("/caseAnalysisService/v1")
 public class AddCustomerController {
 	
 	@Autowired

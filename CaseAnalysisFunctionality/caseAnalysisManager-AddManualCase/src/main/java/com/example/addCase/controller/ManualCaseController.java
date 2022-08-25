@@ -15,7 +15,7 @@ import com.example.addCase.bean.CaseItemBean;
 import com.example.addCase.service.ManualCaseService;
 
 @RestController
-@RequestMapping("/caseAnalysisService")
+@RequestMapping("/caseAnalysisService/v1")
 public class ManualCaseController {
 
 	@Autowired

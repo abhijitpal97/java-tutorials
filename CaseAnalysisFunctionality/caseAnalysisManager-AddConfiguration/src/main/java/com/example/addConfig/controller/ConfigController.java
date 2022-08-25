@@ -23,7 +23,7 @@ import com.example.addConfig.service.ConfigAddService;
 import com.example.addConfig.service.ConfigFindService;
 
 @RestController
-@RequestMapping("/caseAnalysisService")
+@RequestMapping("/caseAnalysisService/v1")
 public class ConfigController {
 	Logger log = LoggerFactory.getLogger(ConfigController.class);
 
