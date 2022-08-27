@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.addkyc.KafkaService.Producer;
 import com.example.addkyc.bean.CustomerBean;
 import com.example.addkyc.service.AddService;
 import com.example.addkyc.service.FindService;
@@ -27,19 +28,27 @@ public class AddCustomerController {
 	AddService services;
 	
 	@Autowired
+	Producer producer;
+	
+	@Autowired
 	FindService findServices;
 	@PostMapping("/addCustomerDetails")
 	public CustomerBean addCustomer(@RequestBody CustomerBean customer) throws InterruptedException, ExecutionException
 	{
 		 CompletableFuture<CustomerBean> futureList = services.addCustomer(customer);
-		
-		return futureList.get();
+		 CustomerBean bean =  futureList.get();
+		 
+		 producer.producerData("AddKYCInformation", "Cutomer Information Stored { Name : "+bean.getCustomerName()+" , Gender: "+bean.getCustomerGender()+" }" , "addkycInformation");
+		 
+		 return bean;
 	}
 	
 	@GetMapping("/findCustomerDetails/{id}")
 	public CustomerBean getCustomerDetails(@PathVariable int id)
 	{
-		return findServices.getCustomerBean(id);
+		CustomerBean bean = findServices.getCustomerBean(id);
+		producer.producerData("AddKYCInformation", "Cutomer Information Retrived for Id - "+id+" { + Name : "+bean.getCustomerName()+" , Gender: "+bean.getCustomerGender()+" }" , "auditkey");
+		return bean;
 	}
 
 }

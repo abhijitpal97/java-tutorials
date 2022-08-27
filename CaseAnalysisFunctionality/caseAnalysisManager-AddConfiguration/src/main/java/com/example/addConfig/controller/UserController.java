@@ -39,7 +39,7 @@ public class UserController {
 		CompletableFuture<List<UserBean>> future =services.addUsers(users);
 		if(future.get().size() == users.size())
 		{
-			producer.ProducerData("Config", "Users added successfully. Total Count - "+users.size(), "saveuserkey");
+			producer.producerData("Config", "Users added successfully. Total Count - "+users.size(), "saveuserkey");
 			return ResponseEntity.status(HttpStatus.CREATED).build();
 		}
 		else
@@ -56,7 +56,7 @@ public class UserController {
 				).get();
 
 		if(! future.isEmpty())
-			producer.ProducerData("Config", "User Search based on Name "+name+" done.", "auditkey");
+			producer.producerData("Config", "User Search based on Name "+name+" done.", "auditkey");
 		return future;
 
 	}

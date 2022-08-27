@@ -44,7 +44,7 @@ public class ConfigController {
 
 		if(result.get().size() == config.size())
 		{
-			producer.ProducerData("Config", "Added Configurations - "+config, "saveconfigkey");
+			producer.producerData("Config", "Added Configurations - "+config, "saveconfigkey");
 			return ResponseEntity.status(HttpStatus.CREATED).build();
 		}
 			
@@ -61,7 +61,7 @@ public class ConfigController {
 				).get();
 		
 		if(! future.isEmpty())
-			producer.ProducerData("Config", "Configuration Search based on Key "+key+" done.", "auditkey");
+			producer.producerData("Config", "Configuration Search based on Key "+key+" done.", "auditkey");
 		return future;
 
 	}
@@ -76,7 +76,7 @@ public class ConfigController {
 				).get();
 		
 		if(! future.isEmpty())
-			producer.ProducerData("Config", "Configuration Search based on Region "+region+" done.", "auditkey");
+			producer.producerData("Config", "Configuration Search based on Region "+region+" done.", "auditkey");
 		return future;
 
 	}

@@ -44,7 +44,7 @@ public class BUConfigController {
 		int count = future.get().size();
 		if(count == buNames.size())
 		{
-			producer.ProducerData("Config", "Total "+count+" Bu addition Happen successfully. Result Set - "+buNames, "saveBukey");
+			producer.producerData("Config", "Total "+count+" Bu addition Happen successfully. Result Set - "+buNames, "saveBukey");
 			return ResponseEntity.status(HttpStatus.CREATED).build();
 		}
 
@@ -62,7 +62,7 @@ public class BUConfigController {
 				}
 				).get();
 		if(! future.isEmpty())
-			producer.ProducerData("Config", "Bu Search for Name "+buName+" done.", "auditkey");
+			producer.producerData("Config", "Bu Search for Name "+buName+" done.", "auditkey");
 
 		return future;
 	}
@@ -76,7 +76,7 @@ public class BUConfigController {
 				}
 				).get();
 		if(! future.isEmpty())
-			producer.ProducerData("Config", "Bu Search based on Region "+region+" done.", "auditkey");
+			producer.producerData("Config", "Bu Search based on Region "+region+" done.", "auditkey");
 		return future;
 
 	}
