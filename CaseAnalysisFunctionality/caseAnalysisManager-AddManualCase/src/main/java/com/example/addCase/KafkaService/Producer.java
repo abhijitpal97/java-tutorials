@@ -1,4 +1,4 @@
-package com.example.addkyc.KafkaService;
+package com.example.addCase.KafkaService;
 
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;

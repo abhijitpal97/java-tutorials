@@ -11,6 +11,9 @@ import javax.persistence.PersistenceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +36,8 @@ public class ManualCaseService implements ManualCaseAddRepository{
 
 
 	@Transactional
+	@CacheEvict("manualCases")
+	@CachePut("manualCases")
 	@Override
 	public CompletableFuture<Map<String, List<CaseItemBean>>> addManualCase(List<CaseItemBean> caseItembeans) throws ResourceAccessException , Exception {
 		List<CaseItemBean> successfullyAddedItem = new ArrayList<>();
@@ -75,5 +80,12 @@ public class ManualCaseService implements ManualCaseAddRepository{
 
 	}
 
+	@Cacheable("manualCases")
+	@Override
+	public CaseItemBean getCaseById(String id) {
+		System.out.println("Manual Case Retrived from Db");
+		return repo.findAllByalertid(id);
+	}
 
+	
 }

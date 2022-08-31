@@ -19,12 +19,14 @@ public class CaseAnalysisManagerApiGateWayApplication {
 	@Bean
 	public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
 		return builder.routes()
-				.route(r -> r.path("/caseAnalysisService/**")
+				.route(r -> r.path("/caseAnalysisService/v1/config/**")
 						.uri("http://localhost:9091"))
-				.route(r -> r.path("/caseAnalysisService/**")
-						.uri("http://localhost:9092"))
-				.route(r -> r.path("/caseAnalysisService/**")
+				.route(r -> r.path("//caseAnalysisService/v1/kyc/**")
 						.uri("http://localhost:9093"))
+				.route(r -> r.path("/caseAnalysisService/v1/manual/**")
+						.uri("http://localhost:9096"))
+				.route(r -> r.path("//caseAnalysisService/v1/notes**")
+						.uri("http://localhost:9097"))
 				.build();
 	}
 }

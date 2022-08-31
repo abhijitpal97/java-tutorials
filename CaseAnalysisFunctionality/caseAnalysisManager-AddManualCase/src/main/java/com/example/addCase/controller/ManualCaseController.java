@@ -7,17 +7,19 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.addCase.KafkaService.Producer;
 import com.example.addCase.bean.CaseItemBean;
 import com.example.addCase.service.ManualCaseService;
-import com.example.addkyc.KafkaService.Producer;
 
 @RestController
-@RequestMapping("/caseAnalysisService/v1")
+@RequestMapping("/caseAnalysisService/v1/manual")
 public class ManualCaseController {
 
 	@Autowired
@@ -44,5 +46,16 @@ public class ManualCaseController {
 		producer.producerData("AddManualCase", "Manual Case Stored { AlertIds : "+bean+" }" , "addkycInformation");
 
 		return map;
+	}
+	
+	
+	@GetMapping("/getCaseById/{id}")
+	public CaseItemBean getCaseById(@PathVariable String id)
+	{
+		CaseItemBean bean = services.getCaseById(id);
+		
+		producer.producerData("GetManualCase", "Manual Case Retrived for Id - "+ bean.getAlertid(), "auditkey");
+		
+		return bean;
 	}
 }

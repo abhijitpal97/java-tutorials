@@ -20,7 +20,7 @@ import com.example.addConfig.service.ConfigAddService;
 import com.example.addConfig.service.ConfigFindService;
 
 @RestController
-@RequestMapping("/caseAnalysisService/v1")
+@RequestMapping("/caseAnalysisService/v1/config")
 public class UserController {
 
 	@Autowired

@@ -9,6 +9,8 @@ public interface ManualCaseRepository extends JpaRepository<CaseItemBean, Intege
 	
 	@Query(value = "select ALERTIDGENERETOR.nextval from dual" , nativeQuery = true)
 	public int getSeqId();
+
+	public CaseItemBean findAllByalertid(String id);
 	
 
 }
