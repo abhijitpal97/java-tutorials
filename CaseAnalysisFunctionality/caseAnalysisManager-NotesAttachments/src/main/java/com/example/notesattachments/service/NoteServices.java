@@ -17,6 +17,11 @@ public class NoteServices implements NoteRepository{
 	public NoteBean addNotes(NoteBean beanRequest) {
 		return repo.save(beanRequest);
 	}
+	
+	@Override
+	public NoteBean retriveNotes(int alertId) {
+		return repo.findAllByalertId(alertId);
+	}
 
 
 }
