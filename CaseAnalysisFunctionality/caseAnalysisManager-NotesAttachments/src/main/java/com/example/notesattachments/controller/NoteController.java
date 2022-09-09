@@ -1,5 +1,7 @@
 package com.example.notesattachments.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,10 +33,10 @@ public class NoteController {
 	}
 	
 	@GetMapping("/retriveNotes/{alertId}")
-	public NoteBean retriveNotes(@PathVariable int alertId)
+	public List<NoteBean> retriveNotes(@PathVariable int alertId)
 	{
-		NoteBean bean = services.retriveNotes(alertId);
-		producer.producerData("viewNotes", "Note Retrived for Alert Internal Id - "+bean.getAlertId()+" , Notes - "+bean.getNotes(), "auditkey");
+		List<NoteBean> bean = services.retriveNotes(alertId);
+		producer.producerData("viewNotes", "Note Retrived for Alert Internal Id - "+alertId+" , Notes Count- "+bean.size(), "auditkey");
 		
 		return bean;
 	}

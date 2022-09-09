@@ -1,5 +1,7 @@
 package com.example.notesattachments.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +21,7 @@ public class NoteServices implements NoteRepository{
 	}
 	
 	@Override
-	public NoteBean retriveNotes(int alertId) {
+	public List<NoteBean> retriveNotes(int alertId) {
 		return repo.findAllByalertId(alertId);
 	}
 
