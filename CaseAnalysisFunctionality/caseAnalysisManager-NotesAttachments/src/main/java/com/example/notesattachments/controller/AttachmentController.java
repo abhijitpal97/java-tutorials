@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.notesattachments.bean.AttachmentBean;
@@ -36,23 +37,29 @@ public class AttachmentController {
 	public AttachmentBean uploadAttachment(@RequestParam("alertId") String alertId, @RequestParam("addedBy") String addedBy, @RequestParam("file") MultipartFile file) throws IOException
 	{
 		AttachmentReferenceBean referencebean = new AttachmentReferenceBean();
+		AttachmentBean returnBean = new AttachmentBean();
+		AttachmentReferenceBean attachmentbean =new AttachmentReferenceBean(); 
+
 		AttachmentBean attachment = new AttachmentBean();
 		attachment.setALERTID(alertId);
 		attachment.setADDEDBY(addedBy);
 		attachment.setATTACHMENT("Doc is stored in Mongo Db");
 
-		AttachmentBean returnBean = services.saveAttachment(attachment);
-
-		AttachmentReferenceBean attachmentbean = new AttachmentReferenceBean();
-
-		if(((file.getSize()/1024)/1024)<16)
+		if(((file.getSize()/1024)/1024)<=16)
 		{
+			returnBean = services.saveAttachment(attachment);
+
+			attachmentbean = new AttachmentReferenceBean();
 
 			attachmentbean.setAttachmentRefereceId(returnBean.getATTACHMENTINTERNALID());
 			attachmentbean.setImage( new Binary(BsonBinarySubType.BINARY, file.getBytes()));
 
 			referencebean = services.addAttachment(attachmentbean);
 
+		}
+		else
+		{
+			throw new MaxUploadSizeExceededException(16);
 		}
 		System.out.println("Attachment Added Successfully ? - " + referencebean.getId());
 		producer.producerData("addAttachments", "Note added for Alert Internal Id - "+returnBean.getALERTID()+" , Attachment Documetn ID from Mongo - "+referencebean.getId(), "addNoteAttachments");
