@@ -25,7 +25,9 @@ public class CaseAnalysisManagerApiGateWayApplication {
 						.uri("http://localhost:9093"))
 				.route(r -> r.path("/caseAnalysisService/v1/manual/**")
 						.uri("http://localhost:9096"))
-				.route(r -> r.path("//caseAnalysisService/v1/notes**")
+				.route(r -> r.path("//caseAnalysisService/v1/notes/**")
+						.uri("http://localhost:9097"))
+				.route(r -> r.path("//caseAnalysisService/v1/attachments/**")
 						.uri("http://localhost:9097"))
 				.build();
 	}
