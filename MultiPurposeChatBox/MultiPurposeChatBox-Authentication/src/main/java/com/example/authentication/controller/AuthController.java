@@ -59,10 +59,35 @@ public class AuthController {
 		return services.addUser(user);
 	}
 	
-	@PutMapping("/setPassword")
-	public String updatePassword(@RequestBody Map<String, Object> userMap)
+	@GetMapping("/login")
+	public String login(@RequestBody Map<String, Object> userMap , @RequestHeader("Password")  String password)
 	{
-		return services.updatePassword((int) userMap.get("userId") , (String) userMap.get("password"));
+
+		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();     
+		Optional<UserBean> optional = findServices.getUserDetails(userMap);
+		if(! optional.isPresent()) return "UserId not present";
+		else
+		{
+			UserBean bean = optional.get();
+			if(((String) userMap.get("userName")).equals(bean.getFirstName()) 
+					&& 
+					(passwordEncoder.matches((String) password, bean.getPassword()))
+					) 
+			{
+				return "Session started for user - " + bean.getFirstName()+" "+bean.getLastName();
+				
+			}
+			else return "Wrong UserInfo Provided !!";
+		}
+		
+		
+	
+	}
+	
+	@PutMapping("/setPassword")
+	public String updatePassword(@RequestBody Map<String, Object> userMap , @RequestHeader("Password")  String password)
+	{
+		return services.updatePassword((int) userMap.get("userId") , password);
 	}
 	
 	@PutMapping("/updateProfile")
@@ -87,7 +112,7 @@ public class AuthController {
 	}
 	
 	@PutMapping("/activateProfile")
-	public String activateProfile(@RequestBody Map<String, Object> userMap)
+	public String activateProfile(@RequestBody Map<String, Object> userMap ,  @RequestHeader("Password")  String password)
 	{
 		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();     
 		Optional<UserBean> optional = findServices.getUserDetails(userMap);
@@ -97,7 +122,7 @@ public class AuthController {
 			UserBean bean = optional.get();
 			if(((String) userMap.get("userName")).equals(bean.getFirstName()) 
 					&& 
-					(passwordEncoder.matches((String) userMap.get("password"),bean.getPassword()))
+					(passwordEncoder.matches((String) password, bean.getPassword()))
 					) 
 			{
 				userMap.remove("userName");
