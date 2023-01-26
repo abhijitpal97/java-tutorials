@@ -1,3 +1,6 @@
-2023-01-22 17:57:28.689  INFO 14816 --- [main] c.e.e.ElkLoggingApplicationTests         : Starting ElkLoggingApplicationTests using Java 17.0.3.1 on DESKTOP-GABUEQ7 with PID 14816 (started by ADMIN in C:\Users\ADMIN\Documents\GitHub\java-tutorials\ELKLogging)
-2023-01-22 17:57:28.693  INFO 14816 --- [main] c.e.e.ElkLoggingApplicationTests         : No active profile set, falling back to 1 default profile: "default"
-2023-01-22 17:57:29.946  INFO 14816 --- [main] c.e.e.ElkLoggingApplicationTests         : Started ElkLoggingApplicationTests in 1.534 seconds (JVM running for 2.319)
+2023-01-26 18:03:22.425  INFO 10556 --- [main] c.e.e.ElkLoggingApplicationTests         : Starting ElkLoggingApplicationTests using Java 17.0.3.1 on DESKTOP-GABUEQ7 with PID 10556 (started by ADMIN in C:\Users\ADMIN\Documents\GitHub\java-tutorials\ELKLogging)
+2023-01-26 18:03:22.429  INFO 10556 --- [main] c.e.e.ElkLoggingApplicationTests         : No active profile set, falling back to 1 default profile: "default"
+2023-01-26 18:03:23.432  INFO 10556 --- [main] c.e.e.ElkLoggingApplicationTests         : Started ElkLoggingApplicationTests in 1.222 seconds (JVM running for 1.835)
+2023-01-26 19:10:40.768  INFO 6064 --- [main] c.e.e.ElkLoggingApplicationTests         : Starting ElkLoggingApplicationTests using Java 17.0.3.1 on DESKTOP-GABUEQ7 with PID 6064 (started by ADMIN in C:\Users\ADMIN\Documents\GitHub\java-tutorials\ELKLogging)
+2023-01-26 19:10:40.771  INFO 6064 --- [main] c.e.e.ElkLoggingApplicationTests         : No active profile set, falling back to 1 default profile: "default"
+2023-01-26 19:10:41.825  INFO 6064 --- [main] c.e.e.ElkLoggingApplicationTests         : Started ElkLoggingApplicationTests in 1.273 seconds (JVM running for 2.004)
