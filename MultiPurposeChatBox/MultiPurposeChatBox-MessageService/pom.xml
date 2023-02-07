@@ -14,7 +14,7 @@
 	<name>MultiPurposeChatBox-MessageService</name>
 	<description>Demo project for Spring Boot MessageService</description>
 	<properties>
-		<java.version>17</java.version>
+		<java.version>14</java.version>
 		<spring-cloud.version>2021.0.4</spring-cloud.version>
 	</properties>
 	<dependencies>
