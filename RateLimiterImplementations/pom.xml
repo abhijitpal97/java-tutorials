@@ -1,0 +1,29 @@
+<groupId>com.example.ratelimiter</groupId>
+<artifactId>ratelimiter</artifactId>
+<version>1.0</version>
+<packaging>pom</packaging>
+<name>ratelimiter</name>
+ 
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>14</source>
+					<target>14</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	
+	
+<modules>
+    <module>TokenRateLimiter</module>    
+</modules>
+
+
+	
+<properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+</properties>
