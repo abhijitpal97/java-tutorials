@@ -9,8 +9,6 @@ import com.example.rateLimiter.RateLimiter;
 
 /**
  * @author ap39354
- * @implNote
- * Blocking Queue - It handles the request size comparing to teh blocking queue size. Also this is a thread safe as its a concurrent package.
  *
  */
 
