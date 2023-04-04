@@ -21,11 +21,13 @@ import com.example.addCase.bean.ConfigurationBean;
 import com.example.addCase.repository.ValidationInterface;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 
 @Component
 public class ValidatorClass implements ValidationInterface{
 
 	Logger logger = LoggerFactory.getLogger(ValidatorClass.class);
+	private static final String CONFIG_SERVICE="configservice";
 
 	@Bean
 	@LoadBalanced
@@ -36,6 +38,7 @@ public class ValidatorClass implements ValidationInterface{
 	
 	
 	@CircuitBreaker(name = "validateService" , fallbackMethod = "genericFallbackMethod")
+	@Retry(name = CONFIG_SERVICE, fallbackMethod = "genericFallbackMethod")
 	@Override
 	public boolean isValidated(CaseItemBean items) throws ResourceAccessException{
 
