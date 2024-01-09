@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.addConfig.ResponseObject;
+import com.example.addConfig.StudentRepository;
 import com.example.addConfig.bean.UserBean;
 import com.example.addConfig.kafkaService.Producer;
 import com.example.addConfig.service.ConfigAddService;
@@ -31,7 +33,6 @@ public class UserController {
 
 	@Autowired
 	Producer producer;
-
 
 	@PostMapping("/addUserDetails")
 	public ResponseEntity<String> saveBuConfig(@RequestBody List<UserBean> users) throws InterruptedException, ExecutionException
@@ -60,5 +61,12 @@ public class UserController {
 		return future;
 
 	}
+
+	@GetMapping("/get")
+	public List<ResponseObject> getResponse()
+	{
+		return findService.findDetails();
+	}
+
 
 }

@@ -1,0 +1,15 @@
+Post ->
+http://localhost:8080/v1/saveUser
+
+Body ->
+{
+"name" : "Abhijit"
+}
+
+Post ->
+http://localhost:8080/v1/savePoint/1
+Body -> 
+
+{
+    "point" : 250
+}
