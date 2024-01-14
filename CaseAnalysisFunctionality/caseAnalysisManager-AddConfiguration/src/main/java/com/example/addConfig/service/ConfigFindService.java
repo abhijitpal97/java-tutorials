@@ -1,5 +1,7 @@
 package com.example.addConfig.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -9,6 +11,9 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import com.example.addConfig.ResponseObject;
+import com.example.addConfig.Student;
+import com.example.addConfig.StudentRepository;
 import com.example.addConfig.bean.BUConfigurationBean;
 import com.example.addConfig.bean.ConfigurationBean;
 import com.example.addConfig.bean.UserBean;
@@ -30,6 +35,8 @@ public class ConfigFindService implements ConfigurationFindRepository,BUFindRepo
 	BURepository buRepo;
 	@Autowired
 	UserRepo userRepo;
+	@Autowired
+	StudentRepository stuRepo;
 	
 	@Cacheable(value = "configurations")
 	@Override
@@ -69,6 +76,19 @@ public class ConfigFindService implements ConfigurationFindRepository,BUFindRepo
 		return userRepo.findAllByname(name);
 	}
 
+	
+	public List<ResponseObject> findDetails()
+	{
+		List<Student> student = stuRepo.findDetails();
+		String fN = student.get(0).getFirstName();
+		String lN = student.get(0).getLastName();
+		String cT = student.get(0).getAddress().getCity();
+		ResponseObject ro = new ResponseObject();
+		ro.setFirst_name(fN);
+		ro.setLast_name(lN);
+		ro.setCity(cT);
+		return new ArrayList<>(Arrays.asList(ro));
+	}
 	
 
 }
